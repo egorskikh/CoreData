@@ -1,6 +1,6 @@
 # CoreData
 
-Проекты написаны по книге [CoreData by Tutorials](https://www.raywenderlich.com/books/core-data-by-tutorials/v7.0) для знакомства с фреймворком CoreData 
+The projects were written based on the book  [CoreData by Tutorials](https://www.raywenderlich.com/books/core-data-by-tutorials/v7.0) while exploring Core Data.
 
 ## Сontents
 
