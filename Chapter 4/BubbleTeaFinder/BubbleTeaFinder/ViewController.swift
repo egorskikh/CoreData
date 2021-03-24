@@ -105,7 +105,8 @@ extension ViewController {
     let jsonData = try Data(contentsOf: jsonURL)
 
     guard
-      let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: [.fragmentsAllowed]) as? [String: Any],
+      let jsonDict = try JSONSerialization.jsonObject(with: jsonData,
+                                                      options: [.fragmentsAllowed]) as? [String: Any],
       let responseDict = jsonDict["response"] as? [String: Any],
       let jsonArray = responseDict["venues"] as? [[String: Any]]
     else {
@@ -113,6 +114,7 @@ extension ViewController {
     }
 
     for jsonDictionary in jsonArray {
+      
       guard
         let contactDict = jsonDictionary["contact"] as? [String: String],
         let specialsDict = jsonDictionary["specials"] as? [String: Any],
