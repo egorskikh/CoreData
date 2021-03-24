@@ -61,11 +61,11 @@
 				7B989DFC2604993700FADA5C /* AppDelegate.swift */,
 				7B989DFE2604993700FADA5C /* SceneDelegate.swift */,
 				7B989E002604993700FADA5C /* ViewController.swift */,
+				7B989E052604993700FADA5C /* HitList.xcdatamodeld */,
 				7B989E022604993700FADA5C /* Main.storyboard */,
 				7B989E082604993B00FADA5C /* Assets.xcassets */,
 				7B989E0A2604993B00FADA5C /* LaunchScreen.storyboard */,
 				7B989E0D2604993B00FADA5C /* Info.plist */,
-				7B989E052604993700FADA5C /* HitList.xcdatamodeld */,
 			);
 			path = HitList;
 			sourceTree = "<group>";
