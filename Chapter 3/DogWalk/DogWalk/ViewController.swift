@@ -44,19 +44,19 @@ class ViewController: UIViewController {
   }()
   
   lazy var coreDataStack = CoreDataStack(modelName: "DogWalk")
-
+  
   var currentDog: Dog?
   
   
-
+  
   // MARK: - IBOutlets
   @IBOutlet var tableView: UITableView!
-
-
+  
+  
   // MARK: - View Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
     let dogName = "Baileys"
     let dogFetch: NSFetchRequest<Dog> = Dog.fetchRequest()
     dogFetch.predicate = NSPredicate(format: "%K == %@",
@@ -87,16 +87,10 @@ class ViewController: UIViewController {
 
 extension ViewController {
   @IBAction func add(_ sender: UIBarButtonItem) {
-  // Insert the new Walk entity into Core Data
+    // Insert the new Walk entity into Core Data
     let walk = Walk(context: coreDataStack.managedContext)
     walk.date = Date()
     
-    // Insert the new Walk into the Dog's walks set
-//    if let dog = currentDog,
-//       let walks = dog.walks?.mutableCopy() as? NSMutableOrderedSet {
-//      walks.add(walk)
-//      dog.walks = walks
-//    }
     currentDog?.addToWalks(walk)
     
     // Save the manage object context
@@ -113,21 +107,22 @@ extension ViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     currentDog?.walks?.count ?? 0
   }
-
+  
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-   
+    
     let cell = tableView.dequeueReusableCell(
       withIdentifier: "Cell", for: indexPath)
     
-    guard let walk = currentDog?.walks?[indexPath.row] as? Walk,
-          let walkDate = walk.date as Date?
+    guard
+      let walk = currentDog?.walks?[indexPath.row] as? Walk,
+      let walkDate = walk.date as Date?
     else {
       return cell
     }
-    cell.textLabel?.text = dateFormatter.string(from: walkDate)
+    cell.textLabel?.text = dateFormatter.string(from: walkDate) //
     return cell
   }
-
+  
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     "List of Walks"
   }
@@ -136,16 +131,15 @@ extension ViewController: UITableViewDataSource {
     return true
   }
   
-  func tableView(_ tableView: UITableView,
-                 commit editingStyle: UITableViewCell.EditingStyle,
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
                  forRowAt indexPath: IndexPath
   ) {
     guard let walkToRemove =
-      currentDog?.walks?[indexPath.row] as? Walk,
-      editingStyle == .delete else {
+            currentDog?.walks?[indexPath.row] as? Walk,
+          editingStyle == .delete else {
       return
     }
-
+    
     coreDataStack.managedContext.delete(walkToRemove)
     coreDataStack.saveContext()
     tableView.deleteRows(at: [indexPath], with: .automatic)
