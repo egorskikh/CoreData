@@ -12,6 +12,7 @@ import CoreData
 class CoreDataStack {
   
   private let modelName: String
+  
   lazy var managedContext: NSManagedObjectContext = {
     self.storeContainer.viewContext
   }()
@@ -31,6 +32,7 @@ class CoreDataStack {
   }()
   
   func saveContext() {
+    
     guard managedContext.hasChanges else { return }
     
     do  {
@@ -38,7 +40,6 @@ class CoreDataStack {
     } catch let error as NSError {
       print("Unresolved error \(error), \(error.userInfo)")
     }
-    
   }
   
 }

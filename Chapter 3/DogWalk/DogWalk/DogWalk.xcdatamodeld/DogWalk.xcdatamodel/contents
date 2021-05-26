@@ -10,6 +10,6 @@
     </entity>
     <elements>
         <element name="Dog" positionX="-45" positionY="0" width="128" height="73"/>
-        <element name="Walk" positionX="330.818359375" positionY="85.15982055664062" width="128" height="73"/>
+        <element name="Walk" positionX="330.818359375" positionY="85.15982055664062" width="128" height="59"/>
     </elements>
 </model>

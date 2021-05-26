@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-       fetch()
+        fetch()
     }
     
     // MARK: - Action
@@ -39,7 +39,12 @@ class ViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         let saveAction = UIAlertAction(title: "Save", style: .default) { [unowned self] action in
             
-            guard let textField = alert.textFields?.first, let nameToSave = textField.text else { return }
+            guard
+                let textField = alert.textFields?.first,
+                let nameToSave = textField.text
+            else {
+                return
+            }
             
             self.save(name: nameToSave)
             self.tableView.reloadData()
@@ -63,7 +68,7 @@ class ViewController: UIViewController {
         let persone = NSManagedObject(entity: entity, insertInto: managetContext)
         
         persone.setValue(name, forKey: "name")
-    
+        
         do {
             try managetContext.save()
             people.append(persone)

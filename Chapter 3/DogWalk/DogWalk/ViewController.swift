@@ -58,13 +58,16 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     
     let dogName = "Baileys"
+    
     let dogFetch: NSFetchRequest<Dog> = Dog.fetchRequest()
+    
     dogFetch.predicate = NSPredicate(format: "%K == %@",
                                      #keyPath(Dog.name),
                                      dogName)
     
     do {
       let results = try coreDataStack.managedContext.fetch(dogFetch)
+      
       if results.isEmpty {
         // Baileys not found, create Baileys
         currentDog = Dog(context: coreDataStack.managedContext)
@@ -73,12 +76,9 @@ class ViewController: UIViewController {
       } else {
         currentDog = results.first
       }
-      
     } catch let error as NSError {
       print("Fetch error: \(error), \(error.userInfo)")
     }
-    
-    
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
   }
 }
@@ -119,7 +119,7 @@ extension ViewController: UITableViewDataSource {
     else {
       return cell
     }
-    cell.textLabel?.text = dateFormatter.string(from: walkDate) //
+    cell.textLabel?.text = dateFormatter.string(from: walkDate)
     return cell
   }
   
@@ -131,12 +131,14 @@ extension ViewController: UITableViewDataSource {
     return true
   }
   
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
-                 forRowAt indexPath: IndexPath
-  ) {
-    guard let walkToRemove =
-            currentDog?.walks?[indexPath.row] as? Walk,
-          editingStyle == .delete else {
+  func tableView(_ tableView: UITableView,
+                 commit editingStyle: UITableViewCell.EditingStyle,
+                 forRowAt indexPath: IndexPath) {
+    guard
+      let
+        walkToRemove = currentDog?.walks?[indexPath.row] as? Walk,
+      editingStyle == .delete
+    else {
       return
     }
     
