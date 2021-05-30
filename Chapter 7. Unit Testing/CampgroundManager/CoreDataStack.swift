@@ -34,7 +34,9 @@ import Foundation
 import CoreData
 
 open class CoreDataStack {
+  
   public static let modelName = "CampgroundManager"
+  
   public static let model: NSManagedObjectModel = {
     // swiftlint:disable force_unwrapping
     let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
