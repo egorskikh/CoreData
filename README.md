@@ -8,7 +8,7 @@
 - Entity - это определение класса в Core Data.
 - Attribute - это часть информации, прикрепленная к объекту.
 - Relationship - это связь между несколькими объектами.
-- NSManagedObject - это представление сущности Core Data во время выполнения. Вы можете читать и записывать в его атрибуты, используя кодирование значения ключа.
+- NSManagedObject - это представление сущности Core Data во время выполнения. Вы можете читать и записывать в его атрибуты, используя Key-Value Coding(кодирование значения ключа).
 - Вам нужен NSManagedObjectContext для save() или fetch(_ :) данных в Core Data и из них.
 - [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%201.%20Your%20First%20Core%20Data%20App/HitList)
 
