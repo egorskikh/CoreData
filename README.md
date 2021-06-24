@@ -37,7 +37,7 @@
 ## The Core Data Stack
 ### Key points
 - **Core Data Stack**. Стек основных данных состоит из пяти классов: 
-1. NSManagedObjectModel*
+1. *NSManagedObjectModel*
 2. *NSPersistentStore*
 3. *NSPersistentStoreCoordinator* 
 4. *NSManagedObjectContext* 
