@@ -68,6 +68,53 @@ This repository was written based on this book.
 <br> </br>
 
 ## Intermediate Fetching
+Рассмотрим пять различных способов настроить запрос на получение, чтобы вас не застали врасплох:
+```swift
+// 1
+let fetchRequest1 = NSFetchRequest<Venue>()
+let entity = 
+  NSEntityDescription.entity(forEntityName: "Venue",
+                             in: managedContext)!
+fetchRequest1.entity = entity
+
+// 2
+let fetchRequest2 = NSFetchRequest<Venue>(entityName: "Venue")
+
+// 3
+let fetchRequest3: NSFetchRequest<Venue> = Venue.fetchRequest()
+
+// 4
+let fetchRequest4 = 
+  managedObjectModel.fetchRequestTemplate(forName: "venueFR")
+
+// 5
+let fetchRequest5 =
+  managedObjectModel.fetchRequestFromTemplate(
+    withName: "venueFR",
+    substitutionVariables: ["NAME" : "Vivi Bubble Tea"])
+```
+> 1
+
+Вы инициализируете экземпляр **NSFetchRequest** как универсальный тип: **NSFetchRequest <Venue>**. Как минимум, вы должны указать **NSEntityDescription** для запроса на выборку. В данном случае это объект Venue. Вы инициализируете экземпляр **NSEntityDescription** и используете его для установки свойства объекта запроса на выборку.
+
+> 2
+
+  Здесь вы используете удобный инициализатор **NSFetchRequest**. Он инициализирует новый запрос на выборку и устанавливает свойство объекта за один шаг. Вам просто нужно предоставить строку для имени объекта, а не полноценное **NSEntityDescription**.
+
+> 3
+
+  Так же, как второй пример был сокращением первого, третий - сокращением второго. Когда вы генерируете подкласс **NSManagedObject**, этот шаг также генерирует метод класса, который возвращает **NSFetchRequest**, уже настроенный для выборки соответствующих типов сущностей.
+Отсюда и происходит **Venue.fetchRequest()**. 
+Этот код находится в **Venue+CoreDataProperties.swift**.
+
+> 4
+
+  В четвертом примере вы получаете запрос на выборку из модели **NSManagedObjectModel**. Вы можете настроить и сохранить часто используемые запросы на выборку в редакторе модели данных Xcode. 
+
+> 5
+
+  Последний случай аналогичен четвертому. Получите запрос на выборку из вашей управляемой объектной модели, но на этот раз вы передадите некоторые дополнительные переменные. Эти переменные «подстановки» используются в предикате для уточнения полученных результатов.
+
 ### Key points
 - **NSFetchRequest** - это общий тип. Он принимает параметр типа, который указывает тип объектов, которые вы ожидаете получить в результате запроса на выборку.
 - Если вы планируете повторно использовать один и тот же тип выборки в разных частях приложения, рассмотрите возможность использования редактора модели данных для хранения неизменяемого запроса выборки непосредственно в вашей модели данных.
