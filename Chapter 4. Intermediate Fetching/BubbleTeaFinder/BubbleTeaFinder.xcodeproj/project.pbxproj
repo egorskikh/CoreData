@@ -129,7 +129,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE0EF99622FF3B2800D0800D /* Build configuration list for PBXNativeTarget "BubbleTeaFinder" */;
 			buildPhases = (
-				79D25151252520F900FF17D1 /* ShellScript */,
+				79D251552525213A00FF17D1 /* Run Script */,
 				FE0EF97B22FF3B2700D0800D /* Sources */,
 				FE0EF97C22FF3B2700D0800D /* Frameworks */,
 				FE0EF97D22FF3B2700D0800D /* Resources */,
@@ -192,7 +192,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		79D25151252520F900FF17D1 /* ShellScript */ = {
+		79D251552525213A00FF17D1 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -201,6 +201,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (

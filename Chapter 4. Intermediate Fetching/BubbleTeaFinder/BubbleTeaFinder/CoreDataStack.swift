@@ -34,7 +34,6 @@ import Foundation
 import CoreData
 
 class CoreDataStack {
-  
   private let modelName: String
 
   init(modelName: String) {
@@ -64,5 +63,4 @@ class CoreDataStack {
       print("Unresolved error \(nserror), \(nserror.userInfo)")
     }
   }
-  
 }
