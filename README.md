@@ -52,6 +52,15 @@ This repository was written based on this book.
 <br> </br>
 
 ## The Core Data Stack
+
+<p align='center'>
+  
+![Снимок экрана 2021-07-26 в 13 59 07](https://user-images.githubusercontent.com/60622982/126978697-9a2b1570-db79-41a7-9fc9-bd040f73041f.png)
+  
+<p align='center'>
+</p>
+
+
 ### Key points
 - **Core Data Stack**. Стек основных данных состоит из пяти классов: 
 1. *NSManagedObjectModel*
