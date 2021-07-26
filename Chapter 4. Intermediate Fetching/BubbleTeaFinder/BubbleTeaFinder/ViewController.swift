@@ -34,6 +34,7 @@ import UIKit
 import CoreData
 
 class ViewController: UIViewController {
+
   // MARK: - Properties
   private let filterViewControllerSegueIdentifier = "toFilterViewController"
   private let venueCellIdentifier = "VenueCell"
@@ -53,6 +54,7 @@ class ViewController: UIViewController {
 
     importJSONSeedDataIfNeeded()
 
+    // Batch updates: no fetching required
     let batchUpdate = NSBatchUpdateRequest(entityName: "Venue")
     batchUpdate.propertiesToUpdate = [#keyPath(Venue.favorite): true]
     batchUpdate.affectedStores = coreDataStack.managedContext.persistentStoreCoordinator?.persistentStores
@@ -65,57 +67,97 @@ class ViewController: UIViewController {
       print("Could not update \(error), \(error.userInfo)")
     }
 
+    // 1
     let venueFetchRequest: NSFetchRequest<Venue> = Venue.fetchRequest()
     fetchRequest = venueFetchRequest
 
-    asyncFetchRequest = NSAsynchronousFetchRequest<Venue>(
-      fetchRequest: venueFetchRequest
-    ) { [unowned self] result in
-      guard let venues = result.finalResult else {
-        return
-      }
+    // 2
+    asyncFetchRequest = NSAsynchronousFetchRequest<Venue>(fetchRequest: venueFetchRequest) { [unowned self] (result: NSAsynchronousFetchResult) in
 
-      self.venues = venues
-      self.tableView.reloadData()
+        guard let venues = result.finalResult else { return }
+
+        self.venues = venues
+        self.tableView.reloadData()
     }
 
+    // 3
     do {
-      guard let asyncFetchRequest = asyncFetchRequest else {
-        return
-      }
+      guard let asyncFetchRequest = asyncFetchRequest else { return }
       try coreDataStack.managedContext.execute(asyncFetchRequest)
       // Returns immediately, cancel here if you want
     } catch let error as NSError {
       print("Could not fetch \(error), \(error.userInfo)")
     }
   }
+  /*
+   1. Обратите внимание, что запрос асинхронной выборки не заменяет обычный запрос выборки.
+   Скорее, вы можете думать об асинхронном запросе на выборку как об оболочке вокруг уже имеющегося у вас запроса на выборку.
+
+   2. Чтобы создать NSAsynchronousFetchRequest, вам понадобятся две вещи:
+   простой старый NSFetchRequest и обработчик завершения.
+   Выбранные вами места проведения содержатся в свойстве finalResult NSAsynchronousFetchResult.
+   В обработчике завершения вы обновляете свойство venues и перезагружаете табличное представление.
+
+   3.Недостаточно указать обработчик завершения! Вам все равно нужно выполнить запрос асинхронной выборки.
+   Опять же, свойство managedContext CoreDataStack берет на себя всю тяжелую работу за вас.
+   Однако обратите внимание, что вы используете другой метод - на этот раз это execute (_ :) вместо обычного fetch (_ :).
+
+   execute (_ :) возвращается немедленно. Вам не нужно ничего делать с возвращаемым значением,
+   поскольку вы собираетесь обновить представление таблицы из блока завершения.
+   Тип возвращаемого значения - NSAsynchronousFetchResult.
+
+   */
 
   // MARK: - Navigation
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
-    guard segue.identifier == filterViewControllerSegueIdentifier,
-          let navController = segue.destination as? UINavigationController,
-          let filterVC = navController.topViewController as? FilterViewController else {
+
+    guard
+      segue.identifier == filterViewControllerSegueIdentifier,
+      let navController = segue.destination as? UINavigationController,
+      let filterVC = navController.topViewController as? FilterViewController
+    else {
       return
     }
-
     filterVC.coreDataStack = coreDataStack
     filterVC.delegate = self
   }
+
 }
 
 // MARK: - IBActions
 extension ViewController {
+
   @IBAction func unwindToVenueListViewController(_ segue: UIStoryboardSegue) {
   }
+
 }
 
-// MARK: - Helper methods
+// MARK: - UITableViewDataSource
+extension ViewController: UITableViewDataSource {
+
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    venues.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: venueCellIdentifier, for: indexPath)
+
+    let venue = venues[indexPath.row]
+    cell.textLabel?.text = venue.name
+    cell.detailTextLabel?.text = venue.priceInfo?.priceCategory
+
+    return cell
+  }
+
+}
+
+// MARK: - Helper Methods
+
 extension ViewController {
+
   func fetchAndReload() {
-    guard let fetchRequest = fetchRequest else {
-      return
-    }
+
+    guard let fetchRequest = fetchRequest else { return }
 
     do {
       venues = try coreDataStack.managedContext.fetch(fetchRequest)
@@ -123,46 +165,15 @@ extension ViewController {
     } catch let error as NSError {
       print("Could not fetch \(error), \(error.userInfo)")
     }
-  }
-}
 
-// MARK: - UITableViewDataSource
-extension ViewController: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    venues.count
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell( withIdentifier: venueCellIdentifier, for: indexPath)
-
-    let venue = venues[indexPath.row]
-    cell.textLabel?.text = venue.name
-    cell.detailTextLabel?.text = venue.priceInfo?.priceCategory
-    return cell
-  }
-}
-
-// MARK: - FilterViewControllerDelegate
-extension ViewController: FilterViewControllerDelegate {
-  func filterViewController(filter: FilterViewController, didSelectPredicate predicate: NSPredicate?, sortDescriptor: NSSortDescriptor?) {
-    guard let fetchRequest = fetchRequest else {
-      return
-    }
-
-    fetchRequest.predicate = nil
-    fetchRequest.sortDescriptors = nil
-    fetchRequest.predicate = predicate
-
-    if let sort = sortDescriptor {
-      fetchRequest.sortDescriptors = [sort]
-    }
-
-    fetchAndReload()
-  }
 }
 
 // MARK: - Data loading
+
 extension ViewController {
+
   func importJSONSeedDataIfNeeded() {
     let fetchRequest = NSFetchRequest<Venue>(entityName: "Venue")
 
@@ -173,6 +184,7 @@ extension ViewController {
     } catch let error as NSError {
       print("Error fetching: \(error), \(error.userInfo)")
     }
+
   }
 
   func importJSONSeedData() throws {
@@ -189,6 +201,7 @@ extension ViewController {
     }
 
     for jsonDictionary in jsonArray {
+
       guard
         let contactDict = jsonDictionary["contact"] as? [String: String],
         let specialsDict = jsonDictionary["specials"] as? [String: Any],
@@ -230,6 +243,28 @@ extension ViewController {
     }
 
     coreDataStack.saveContext()
+  }
+}
+
+// MARK: - FilterViewControllerDelegate
+extension ViewController: FilterViewControllerDelegate {
+
+  func filterViewController( filter: FilterViewController,
+                             didSelectPredicate predicate: NSPredicate?,
+                             sortDescriptor: NSSortDescriptor?) {
+
+    guard let fetchRequest = fetchRequest else { return }
+
+    fetchRequest.predicate = nil
+    fetchRequest.sortDescriptors = nil
+
+    fetchRequest.predicate = predicate
+
+    if let sort = sortDescriptor {
+      fetchRequest.sortDescriptors = [sort]
+    }
+
+    fetchAndReload()
   }
 
 }

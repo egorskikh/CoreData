@@ -39,5 +39,4 @@ extension Category {
   @NSManaged public var categoryID: String?
   @NSManaged public var name: String?
   @NSManaged public var venue: Venue?
-  
 }

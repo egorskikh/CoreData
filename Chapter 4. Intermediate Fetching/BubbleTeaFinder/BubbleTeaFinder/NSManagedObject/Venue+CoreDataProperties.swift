@@ -44,5 +44,4 @@ extension Venue {
   @NSManaged public var location: Location?
   @NSManaged public var priceInfo: PriceInfo?
   @NSManaged public var stats: Stats?
-  
 }

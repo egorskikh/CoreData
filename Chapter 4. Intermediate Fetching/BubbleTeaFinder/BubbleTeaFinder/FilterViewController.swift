@@ -34,10 +34,14 @@ import UIKit
 import CoreData
 
 protocol FilterViewControllerDelegate: AnyObject {
-  func filterViewController(filter: FilterViewController, didSelectPredicate predicate: NSPredicate?, sortDescriptor: NSSortDescriptor?)
+  func filterViewController(
+    filter: FilterViewController,
+    didSelectPredicate predicate: NSPredicate?,
+    sortDescriptor: NSSortDescriptor?)
 }
 
 class FilterViewController: UITableViewController {
+
   @IBOutlet weak var firstPriceCategoryLabel: UILabel!
   @IBOutlet weak var secondPriceCategoryLabel: UILabel!
   @IBOutlet weak var thirdPriceCategoryLabel: UILabel!
@@ -60,47 +64,60 @@ class FilterViewController: UITableViewController {
   @IBOutlet weak var priceSortCell: UITableViewCell!
 
   // MARK: - Properties
+
   var coreDataStack: CoreDataStack!
+
   weak var delegate: FilterViewControllerDelegate?
   var selectedSortDescriptor: NSSortDescriptor?
   var selectedPredicate: NSPredicate?
 
   lazy var cheapVenuePredicate: NSPredicate = {
-    return NSPredicate(format: "%K == %@", #keyPath(Venue.priceInfo.priceCategory), "$")
+    return NSPredicate(format: "%K == %@",
+                       #keyPath(Venue.priceInfo.priceCategory),
+                       "$")
   }()
-
   lazy var moderateVenuePredicate: NSPredicate = {
-    return NSPredicate(format: "%K == %@", #keyPath(Venue.priceInfo.priceCategory), "$$")
+    return NSPredicate(format: "%K == %@",
+                       #keyPath(Venue.priceInfo.priceCategory), "$$")
   }()
 
   lazy var expensiveVenuePredicate: NSPredicate = {
-    return NSPredicate(format: "%K == %@", #keyPath(Venue.priceInfo.priceCategory), "$$$")
+    return NSPredicate(format: "%K == %@",
+                       #keyPath(Venue.priceInfo.priceCategory), "$$$")
   }()
 
   lazy var offeringDealPredicate: NSPredicate = {
-    return NSPredicate(format: "%K > 0", #keyPath(Venue.specialCount))
+    return NSPredicate(format: "%K > 0",
+                       #keyPath(Venue.specialCount))
   }()
-
   lazy var walkingDistancePredicate: NSPredicate = {
-    return NSPredicate(format: "%K < 500", #keyPath(Venue.location.distance))
+    return NSPredicate(format: "%K < 500",
+                       #keyPath(Venue.location.distance))
   }()
-
   lazy var hasUserTipsPredicate: NSPredicate = {
-    return NSPredicate(format: "%K > 0", #keyPath(Venue.stats.tipCount))
+    return NSPredicate(format: "%K > 0",
+                       #keyPath(Venue.stats.tipCount))
   }()
 
+
+
+  // sort
   lazy var nameSortDescriptor: NSSortDescriptor = {
     let compareSelector = #selector(NSString.localizedStandardCompare(_:))
-    return NSSortDescriptor(key: #keyPath(Venue.name), ascending: true, selector: compareSelector)
+    return NSSortDescriptor(key: #keyPath(Venue.name),
+                            ascending: true,
+                            selector: compareSelector)
   }()
-
   lazy var distanceSortDescriptor: NSSortDescriptor = {
-    return NSSortDescriptor(key: #keyPath(Venue.location.distance), ascending: true)
+    return NSSortDescriptor( key: #keyPath(Venue.location.distance),
+                             ascending: true)
+  }()
+  lazy var priceSortDescriptor: NSSortDescriptor = {
+    return NSSortDescriptor(key: #keyPath(Venue.priceInfo.priceCategory),
+                            ascending: true)
   }()
 
-  lazy var priceSortDescriptor: NSSortDescriptor = {
-    return NSSortDescriptor(key: #keyPath(Venue.priceInfo.priceCategory), ascending: true)
-  }()
+
 
   // MARK: - View Life Cycle
   override func viewDidLoad() {
@@ -109,6 +126,7 @@ class FilterViewController: UITableViewController {
     populateCheapVenueCountLabel()
     populateModerateVenueCountLabel()
     populateExpensiveVenueCountLabel()
+
     populateDealsCountLabel()
   }
 }
@@ -117,18 +135,19 @@ class FilterViewController: UITableViewController {
 extension FilterViewController {
 
   @IBAction func search(_ sender: UIBarButtonItem) {
-    delegate?.filterViewController(
-      filter: self,
-      didSelectPredicate: selectedPredicate,
-      sortDescriptor: selectedSortDescriptor
-    )
+
+    delegate?.filterViewController(filter: self,
+                                   didSelectPredicate: selectedPredicate,
+                                   sortDescriptor: selectedSortDescriptor)
+
     dismiss(animated: true)
   }
+
 }
 
 // MARK: - UITableViewDelegate
 extension FilterViewController {
-  // swiftlint:disable:next cyclomatic_complexity
+
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
     guard let cell = tableView.cellForRow(at: indexPath) else {
@@ -136,18 +155,23 @@ extension FilterViewController {
     }
 
     switch cell {
+    // Price section
     case cheapVenueCell:
       selectedPredicate = cheapVenuePredicate
     case moderateVenueCell:
       selectedPredicate = moderateVenuePredicate
     case expensiveVenueCell:
       selectedPredicate = expensiveVenuePredicate
+
+    // Most Popular section
     case offeringDealCell:
       selectedPredicate = offeringDealPredicate
     case walkingDistanceCell:
       selectedPredicate = walkingDistancePredicate
     case userTipsCell:
       selectedPredicate = hasUserTipsPredicate
+
+    // Sort By section
     case nameAZSortCell:
       selectedSortDescriptor = nameSortDescriptor
     case nameZASortCell:
@@ -156,14 +180,19 @@ extension FilterViewController {
       selectedSortDescriptor = distanceSortDescriptor
     case priceSortCell:
       selectedSortDescriptor = priceSortDescriptor
-    default: break
+
+    default:
+      break
     }
 
     cell.accessoryType = .checkmark
   }
+  
 }
 
+// MARK: - Helper methods
 extension FilterViewController {
+
   func populateCheapVenueCountLabel() {
     let fetchRequest = NSFetchRequest<NSNumber>(entityName: "Venue")
     fetchRequest.resultType = .countResultType
@@ -194,7 +223,9 @@ extension FilterViewController {
     }
   }
 
+  // An alternate way to fetch a count
   func populateExpensiveVenueCountLabel() {
+
     let fetchRequest: NSFetchRequest<Venue> = Venue.fetchRequest()
     fetchRequest.predicate = expensiveVenuePredicate
 
@@ -207,27 +238,59 @@ extension FilterViewController {
     }
   }
 
+  // .dictionaryResultType
   func populateDealsCountLabel() {
+
+    /*
+     1. Вы начинаете с создания типичного запроса на получение объектов Venue.
+     Затем вы указываете тип результата как .dictionaryResultType.
+     */
     let fetchRequest = NSFetchRequest<NSDictionary>(entityName: "Venue")
     fetchRequest.resultType = .dictionaryResultType
 
+    /*
+     2. Вы создаете NSExpressionDescription для запроса суммы и даете ему имя sumDeals,
+     чтобы вы могли прочитать его результат из словаря результатов, который вы получите обратно из запроса выборки.
+     */
     let sumExpressionDesc = NSExpressionDescription()
     sumExpressionDesc.name = "sumDeals"
 
+    /*
+     3. Вы даете описанию выражения выражение NSE, чтобы указать, что вам нужна функция суммы.
+     Затем дайте этому выражению другое выражение NSExpression, чтобы указать,
+     какое свойство вы хотите суммировать - в данном случае specialCount.
+     Наконец, вы должны установить тип возвращаемых данных вашего описания выражения,
+     поэтому вы установите его как integer32AttributeType.
+     */
     let specialCountExp = NSExpression(forKeyPath: #keyPath(Venue.specialCount))
     sumExpressionDesc.expression = NSExpression(forFunction: "sum:", arguments: [specialCountExp])
     sumExpressionDesc.expressionResultType = .integer32AttributeType
 
+
+    /*
+     4. Вы указываете исходному запросу на выборку получить сумму,
+     задав его свойству propertiesToFetch только что созданное описание выражения.
+     */
     fetchRequest.propertiesToFetch = [sumExpressionDesc]
 
+
+    /*
+     5. Наконец, выполните запрос на выборку в обычном операторе do-catch.
+     Тип результата - это массив NSDictionary, поэтому вы получаете результат своего выражения,
+     используя имя описания выражения (sumDeals), и все готово!
+     */
     do {
+
       let results = try coreDataStack.managedContext.fetch(fetchRequest)
+
       let resultDict = results.first
       let numDeals = resultDict?["sumDeals"] as? Int ?? 0
       let pluralized = numDeals == 1 ?  "deal" : "deals"
       numDealsLabel.text = "\(numDeals) \(pluralized)"
+
     } catch let error as NSError {
       print("count not fetched \(error), \(error.userInfo)")
     }
   }
+
 }
