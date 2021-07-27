@@ -93,8 +93,7 @@ let fetchRequest2 = NSFetchRequest<Venue>(entityName: "Venue")
 let fetchRequest3: NSFetchRequest<Venue> = Venue.fetchRequest()
 
 // 4
-let fetchRequest4 = 
-  managedObjectModel.fetchRequestTemplate(forName: "venueFR")
+let fetchRequest4 = managedObjectModel.fetchRequestTemplate(forName: "venueFR")
 
 // 5
 let fetchRequest5 =
@@ -124,13 +123,20 @@ let fetchRequest5 =
 
   Последний случай аналогичен четвертому. Получите запрос на выборку из вашей управляемой объектной модели, но на этот раз вы передадите некоторые дополнительные переменные. Эти переменные «подстановки» используются в предикате для уточнения полученных результатов.
 
+<br> </br>
+
 |  NSFetchRequest | | 
 | ------------- | ------------- | 
-| .managedObjectResultType | возвращает управляемые объекты (значение по умолчанию). | 
+| .managedObjectResultType | возвращает управляемые объекты **(значение по умолчанию)**. | 
 | .countResultType | возвращает количество объектов, соответствующих запросу на выборку. | 
 | .dictionaryResultType | это универсальный возвращаемый тип для возврата результатов различных вычислений. | 
 | .managedObjectIDResultType | возвращает уникальные идентификаторы вместо полноценных управляемых объектов. | 
-  
+
+> Example
+```swift
+ let fetchRequest = NSFetchRequest<NSDictionary>(entityName: "Data")
+ fetchRequest.resultType = .dictionaryResultType
+```
 ### Key points
 - **NSFetchRequest** - это общий тип. Он принимает параметр типа, который указывает тип объектов, которые вы ожидаете получить в результате запроса на выборку.
 - Если вы планируете повторно использовать один и тот же тип выборки в разных частях приложения, рассмотрите возможность использования редактора модели данных для хранения неизменяемого запроса выборки непосредственно в вашей модели данных.
