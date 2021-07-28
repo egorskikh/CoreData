@@ -16,7 +16,7 @@ This repository was written based on this book.
 - [**NSManagedObject Subclasses**](https://github.com/egorskikh/IOS-CoreData#nsmanagedobject-subclasses) 
 - [**The Core Data Stack**](https://github.com/egorskikh/IOS-CoreData#the-core-data-stack) 
 - [**Intermediate Fetching**](https://github.com/egorskikh/IOS-CoreData#intermediate-fetching) 
-- [NSFetchedResultsController](https://github.com/egorskikh/IOS-CoreData#nsfetchedresultscontroller)
+- [**NSFetchedResultsController**](https://github.com/egorskikh/IOS-CoreData#nsfetchedresultscontroller)
 - Versioning & Migration
 - [**Unit Testing**](https://github.com/egorskikh/IOS-CoreData#unit-testing) 
 - Measuring & Boosting Performance
