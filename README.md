@@ -16,7 +16,7 @@ This repository was written based on this book.
 - [**NSManagedObject Subclasses**](https://github.com/egorskikh/IOS-CoreData#nsmanagedobject-subclasses) 
 - [**The Core Data Stack**](https://github.com/egorskikh/IOS-CoreData#the-core-data-stack) 
 - [**Intermediate Fetching**](https://github.com/egorskikh/IOS-CoreData#intermediate-fetching) 
-- NSFetchedResultsController
+- [NSFetchedResultsController](https://github.com/egorskikh/IOS-CoreData#nsfetchedresultscontroller)
 - Versioning & Migration
 - [**Unit Testing**](https://github.com/egorskikh/IOS-CoreData#unit-testing) 
 - Measuring & Boosting Performance
@@ -27,6 +27,7 @@ This repository was written based on this book.
 
 ## Your First Core Data App
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%201.%20Your%20First%20Core%20Data%20App/HitList)
 - Core Data обеспечивает постоянство на диске, что означает, что ваши данные будут доступны даже после завершения работы вашего приложения или выключения вашего устройства. Это отличается от постоянства в памяти, при котором ваши данные будут сохраняться только до тех пор, пока ваше приложение находится в памяти, либо на переднем плане, либо в фоновом режиме.
 - Xcode поставляется с мощным редактором модели данных, который можно использовать для создания управляемой объектной модели.
 Модель управляемого объекта состоит из сущностей, атрибутов и отношений.
@@ -35,19 +36,20 @@ This repository was written based on this book.
 - **Relationship** - это связь между несколькими объектами.
 - **NSManagedObject** - это представление сущности Core Data во время выполнения. Вы можете читать и записывать в его атрибуты, используя Key-Value Coding(кодирование значения ключа).
 - Вам нужен **NSManagedObjectContext** для **save()** или **fetch(_ :)** данных в **Core Data** и из них.
-- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%201.%20Your%20First%20Core%20Data%20App/HitList)
+
 
 <br> </br>
 
 ## NSManagedObject Subclasses
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%202.%20NSManagedObject%20subclasses%20/BowTies)
 - **Core Data** поддерживает различные типы данных атрибутов, которые определяют, какие данные вы можете хранить в своих объектах, и сколько места они будут занимать на диске. Некоторые общие типы данных атрибутов: **String**, **Date** и **Double**.
 - Тип данных атрибута **Binary Data** дает вам возможность хранить произвольные объемы двоичных данных в вашей модели данных.
 - Тип данных атрибута **Transformable** позволяет хранить любой объект, соответствующий **NSSecureCoding**, в вашей модели данных.
 - Использование подкласса **NSManagedObject** - лучший способ работы с сущностью Core Data. Вы можете либо сгенерировать подкласс вручную, либо позволить Xcode сделать это автоматически.
 - Вы можете уточнить набор сущностей, извлеченных **NSFetchRequest**, используя **NSPredicate**.
 - Вы можете установить правила проверки (например, максимальное значение и минимальное значение) для большинства типов данных атрибутов непосредственно в редакторе модели данных. Контекст управляемого объекта вызовет ошибку, если вы попытаетесь сохранить недопустимые данные.
-- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%202.%20NSManagedObject%20subclasses%20/BowTies)
+
 
 <br> </br>
 
@@ -62,6 +64,7 @@ This repository was written based on this book.
 
 
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%203%20Core%20Data%20Stack/DogWalk)
 - **Core Data Stack**. Стек основных данных состоит из пяти классов: 
 1. *NSManagedObjectModel*
 2. *NSPersistentStore*
@@ -72,7 +75,7 @@ This repository was written based on this book.
 - **Persistent store**. Постоянное хранилище может поддерживаться базой данных SQLite (по умолчанию), XML, двоичным файлом или хранилищем в памяти. Вы также можете предоставить собственное хранилище резервных копий с помощью API инкрементного хранилища.
 - **Persistent store coordinator**. Координатор постоянного хранилища скрывает детали реализации того, как настроены ваши постоянные хранилища, и представляет простой интерфейс для контекста управляемого объекта.
 - **Managed object context**. Контекст управляемого объекта управляет жизненными циклами управляемых объектов, которые он создает или извлекает. Они несут ответственность за выборку, редактирование
-- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%203%20Core%20Data%20Stack/DogWalk)
+
 
 <br> </br>
 
@@ -138,6 +141,7 @@ let fetchRequest5 =
  fetchRequest.resultType = .dictionaryResultType
 ```
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%204.%20Intermediate%20Fetching/BubbleTeaFinder)
 - **NSFetchRequest** - это общий тип. Он принимает параметр типа, который указывает тип объектов, которые вы ожидаете получить в результате запроса на выборку.
 - Если вы планируете повторно использовать один и тот же тип выборки в разных частях приложения, рассмотрите возможность использования редактора модели данных для хранения неизменяемого запроса выборки непосредственно в вашей модели данных.
 - Используйте тип результата счетчика **NSFetchRequest**, чтобы эффективно вычислять и возвращать счетчики из SQLite.
@@ -146,12 +150,21 @@ let fetchRequest5 =
 - Добавьте описание сортировки в запрос на выборку, чтобы эффективно отсортировать полученные результаты.
 - Получение большого количества информации может заблокировать основной поток. Используйте **NSAsynchronousFetchRequest**, чтобы передать часть этой работы фоновому потоку.
 - **NSBatchUpdateRequest** и **NSBatchDeleteRequest** сокращают количество времени и памяти, необходимые для обновления или удаления большого количества записей в **Core Data**.
-- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%204.%20Intermediate%20Fetching/BubbleTeaFinder)
+
 
 <br> </br>
 
 ## NSFetchedResultsController
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%205.%20NSFetchedResultsController/WorldCup/WorldCup)
+- **NSFetchedResultsController** абстрагирует большую часть кода, необходимого для синхронизации табличного представления с базовым хранилищем данных.
+- По своей сути **NSFetchedResultsController** является оболочкой вокруг **NSFetchRequest** и контейнером для полученных результатов.
+- Контроллер полученных результатов требует установки по крайней мере **одного дескриптора сортировки** в своем запросе на выборку. Если вы забудете дескриптор сортировки, ваше приложение выйдет из строя.
+- Вы можете настроить контроллер **sectionNameKeyPath** для полученного результата, чтобы указать атрибут для группировки результатов в разделы табличного представления. Каждое уникальное значение соответствует отдельному разделу представления таблицы.
+- Группировка набора полученных результатов по разделам - дорогостоящая операция. Избегайте многократного вычисления разделов, указав **имя кеша** в выбранном контроллере результатов.
+- Контроллер выбранных результатов может отслеживать изменения в своем наборе результатов и уведомлять своего делегата **NSFetchedResultsControllerDelegate**, чтобы тот ответил на эти изменения.
+- **NSFetchedResultsControllerDelegate** отслеживает изменения в отдельных записях Core Data (были ли они вставлены, удалены или изменены), а также изменения целых разделов.
+- Дифференцируемые источники данных упрощают работу с контроллерами выбранных результатов и табличными представлениями.
 
 <br> </br>
 
@@ -162,10 +175,11 @@ let fetchRequest5 =
 
 ## Unit Testing
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%207.%20Unit%20Testing)
 - **Unit tests** должны следовать принципам **FIRST**: быстро, изолированно, повторяемо, самопроверяемся и своевременно.
 - Создайте *persistent store*(постоянное хранилище), специально предназначенное для модульного тестирования, и сбрасывайте его содержимое с каждым тестом. Использование хранилища **SQLite** в памяти - самый простой подход.
 - **Core Data** может использоваться асинхронно и легко тестируются с помощью класса **XCTestExpectation**.
-- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%207.%20Unit%20Testing)
+
 
 <br> </br>
 
