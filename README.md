@@ -17,11 +17,11 @@ This repository was written based on this book.
 - [**The Core Data Stack**](https://github.com/egorskikh/IOS-CoreData#the-core-data-stack) 
 - [**Intermediate Fetching**](https://github.com/egorskikh/IOS-CoreData#intermediate-fetching) 
 - [**NSFetchedResultsController**](https://github.com/egorskikh/IOS-CoreData#nsfetchedresultscontroller)
-- Versioning & Migration
+- [**Versioning & Migration**](https://github.com/egorskikh/IOS-CoreData#measuring--boosting-performance)
 - [**Unit Testing**](https://github.com/egorskikh/IOS-CoreData#unit-testing) 
-- Measuring & Boosting Performance
-- Multiple Managed Object Contexts
-- NSPersistentCloudKitContainer
+- [**Measuring & Boosting Performance**](https://github.com/egorskikh/IOS-CoreData#measuring--boosting-performance)
+- [**Multiple Managed Object**] Contexts(https://github.com/egorskikh/IOS-CoreData#multiple-managed-object-contexts)
+- [**NSPersistentCloudKitContainer**](https://github.com/egorskikh/IOS-CoreData#nspersistentcloudkitcontainer)
 
 <br> </br>
 
@@ -170,6 +170,16 @@ let fetchRequest5 =
 
 ## Versioning & Migration
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%206.%20Versioning%20%26%20Migration)
+- Миграция необходима, когда вам нужно внести изменения в модель данных.
+- Используйте самый простой из возможных методов миграции.
+- Облегченная миграция - это термин Apple, обозначающий миграцию с наименьшим объемом работы с вашей стороны.
+- По описанию Apple, тяжелые миграции могут включать несколько различных типов пользовательской миграции.
+- Пользовательские миграции позволяют вам создать модель сопоставления, чтобы направить Core Data для внесения более сложных изменений, которые легковесные не могут сделать автоматически.
+- После создания картографической модели не изменяйте целевую модель.
+- Пользовательские миграции вручную идут на один шаг дальше от модели сопоставления и позволяют изменять модель из кода.
+- Полностью ручная миграция позволяет вашему приложению последовательно мигрировать от одной версии к другой, предотвращая проблемы, если пользователь пропускает обновление своего устройства до промежуточной версии.
+- Миграционное тестирование сложно, потому что оно зависит от данных из исходного хранилища. Обязательно протестируйте несколько сценариев, прежде чем выпускать приложение в App Store.
 
 <br> </br>
 
@@ -185,16 +195,35 @@ let fetchRequest5 =
 
 ## Measuring & Boosting Performance
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%208.%20Measuring%20%26%20Boosting%20Performance/EmployeeDirectory)
+- Большинство реализаций Core Data уже являются быстрыми и легкими из-за встроенных оптимизаций Core Data, таких как устранение неисправностей.
+- При улучшении производительности Core Data вы должны измерить, внести целевые изменения, а затем измерить еще раз, чтобы убедиться, что ваши изменения оказали желаемое влияние.
+- Небольшие изменения в модели данных, такие как перемещение больших двоичных объектов в другие объекты, могут повысить производительность.
+- Для оптимальной производительности вы должны ограничить объем данных, которые вы извлекаете, до необходимого минимума: чем больше данных вы извлекаете, тем дольше будет извлечение.
+- Производительность - это баланс между памятью и скоростью. При использовании Core Data в своих приложениях всегда помните об этом балансе.
 
 <br> </br>
 
 ## Multiple Managed Object Contexts
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%209.%20Multiple%20Managed%20Object%20Contexts/SurfJournal)
+- **Managed object context** - это блокнот в памяти для работы с вашими управляемыми объектами.
+- Частные фоновые контексты могут использоваться для предотвращения блокировки основного пользовательского интерфейса.
+- Контексты связаны с конкретными очередями и должны быть доступны только в этих очередях.
+- Дочерние контексты могут упростить архитектуру приложения, упростив сохранение или удаление изменений.
+- Управляемые объекты жестко привязаны к своему контексту и не могут использоваться с другими контекстами.
+
 
 <br> </br>
 
 ## NSPersistentCloudKitContainer
 ### Key points
+- [example](https://github.com/egorskikh/IOS-CoreData/tree/main/Chapter%2010.%20NSPersistentCloudKitContainer/DogDoodies)
+- **NSPersistentCloudKitContainer** - это мощное дополнение к Core Data для синхронизации нескольких устройств для вашего приложения.
+- **CloudKit** имеет ограничения на модели данных Core Data и не поддерживает напрямую управление версиями моделей Core Data.
+- **CloudKit** Dashboard имеет инструменты проверки схемы и данных, которые помогают отлаживать и поддерживать данные вашего приложения.
+- **Симуляторы iOS не поддерживают push-уведомления**, а это означает, что вам нужно сделать дополнительный шаг, чтобы увидеть автоматические слияния.
+- **NSPersistentCloudKitContainer** просто внедрить в ваш проект, но со временем он может усложнить ваше приложение. Помните об изменениях модели данных на будущее и помните о соображениях производительности.
 
 
 
