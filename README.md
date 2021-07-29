@@ -20,7 +20,7 @@ This repository was written based on this book.
 - [**Versioning & Migration**](https://github.com/egorskikh/IOS-CoreData#measuring--boosting-performance)
 - [**Unit Testing**](https://github.com/egorskikh/IOS-CoreData#unit-testing) 
 - [**Measuring & Boosting Performance**](https://github.com/egorskikh/IOS-CoreData#measuring--boosting-performance)
-- [**Multiple Managed Object**] Contexts(https://github.com/egorskikh/IOS-CoreData#multiple-managed-object-contexts)
+- [**Multiple Managed Object Contexts**](https://github.com/egorskikh/IOS-CoreData#multiple-managed-object-contexts)
 - [**NSPersistentCloudKitContainer**](https://github.com/egorskikh/IOS-CoreData#nspersistentcloudkitcontainer)
 
 <br> </br>
