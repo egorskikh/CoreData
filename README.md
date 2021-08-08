@@ -57,8 +57,8 @@ This repository was written based on this book.
 
 <p align='egorskikhcenter'>
   
-![Снимок экрана 2021-07-26 в 13 59 07](https://user-images.githubusercontent.com/60622982/126978697-9a2b1570-db79-41a7-9fc9-bd040f73041f.png)
-  
+![Снимок экрана 2021-08-08 в 18 29 15](https://user-images.githubusercontent.com/60622982/128637315-8045dbd8-4cf4-4022-9e1a-bfab077058d0.png)
+
 <p align='center'>
 </p>
 
